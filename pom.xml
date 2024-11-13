@@ -44,10 +44,22 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- DEPENDENCIA PARA AGREGAR RETROFIT A NUESTRO PROYECTO-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!-- DEPENDENCIA PARA AGREGAR EL TRADUCTOR DE JSON A CLASES JAVA A NUESTRO PROYECTO-->
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>retrofit</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>converter-gson</artifactId>
+			<version>2.9.0</version>
 		</dependency>
 	</dependencies>
 
