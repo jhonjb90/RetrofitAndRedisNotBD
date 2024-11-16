@@ -11,6 +11,7 @@ import pe.dhexsoft.retrofiRediss.retrofit.ClientSunatService;
 import pe.dhexsoft.retrofiRediss.retrofit.impl.ClientSunatServiceImpl;
 import pe.dhexsoft.retrofiRediss.service.InfoSunatService;
 import pe.dhexsoft.retrofiRediss.util.Util;
+import retrofit2.Call;
 
 import java.util.Objects;
 
@@ -44,5 +45,9 @@ public class InfoSunatServiceImpl implements InfoSunatService {
             //no exixte info en redis, iremos al cliente sunat
         }
         return null;
+    }
+
+    private Call<ResponseSunat> preparacionClienteSunat(String ruc){
+        return clientSunatService.getInfoSunat(Constans.BEARER+token, ruc);
     }
 }
