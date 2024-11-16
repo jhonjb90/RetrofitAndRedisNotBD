@@ -1,5 +1,10 @@
 package pe.dhexsoft.retrofiRediss.aggregates.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ResponseSunat {
     private String razonSocial;
     private String tipoDocumento;
