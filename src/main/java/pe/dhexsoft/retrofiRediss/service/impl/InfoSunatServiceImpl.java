@@ -12,7 +12,9 @@ import pe.dhexsoft.retrofiRediss.retrofit.impl.ClientSunatServiceImpl;
 import pe.dhexsoft.retrofiRediss.service.InfoSunatService;
 import pe.dhexsoft.retrofiRediss.util.Util;
 import retrofit2.Call;
+import retrofit2.Response;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @Service
@@ -31,7 +33,7 @@ public class InfoSunatServiceImpl implements InfoSunatService {
     private String token;
 
     @Override
-    public ResponseSunat getInfoSunat(String ruc) throws JsonProcessingException {
+    public ResponseSunat getInfoSunat(String ruc) throws IOException {
         ResponseSunat responseSunat = new ResponseSunat();
         //Logica de mi diagrama
         //Recupero la informacion de Redis
@@ -43,8 +45,19 @@ public class InfoSunatServiceImpl implements InfoSunatService {
             responseSunat = Util.convertirDesdeString(sunatRedisInfo, ResponseSunat.class);
         } else{
             //no exixte info en redis, iremos al cliente sunat
+            //ejectuar clienteSunat Retrofit
+            Response<ResponseSunat> executeSunat = preparacionClienteSunat(ruc).execute(); //va devolver  call y esperamos un response para correguir ese error ejecutamos un execute()
+            //Validar que responde el api
+            if(executeSunat.isSuccessful() && Objects.nonNull(executeSunat.body())) {
+                //Recupero el body (solo el cuerpo porque alli tengo la informacion que requiero)
+                responseSunat = executeSunat.body();
+                //creo mi string para guardar en redis
+                String dataParaRedis = Util.convertirAString(responseSunat);
+                redisService.saveInRedis(Constans.REDIS_KEY_API_SUNAT + ruc,
+                        dataParaRedis, Constans.REDIS_TTL);
+            }
         }
-        return null;
+        return responseSunat;
     }
 
     private Call<ResponseSunat> preparacionClienteSunat(String ruc){
